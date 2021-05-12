@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 2510071343818181667}
   - component: {fileID: 7715350993393781468}
   - component: {fileID: 5240335671002774850}
-  - component: {fileID: -4621126176432611618}
+  - component: {fileID: -2200421910586969310}
+  - component: {fileID: -7237425802011555963}
   m_Layer: 0
   m_Name: waterDrop
   m_TagString: Untagged
@@ -61,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d05a3cb803ff1ee49a96e988f06d8694, type: 2}
+  - {fileID: 2100000, guid: df8908776a6b03a4588b925ff9587aa3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -204,7 +205,7 @@ MonoBehaviour:
       m_Override: 0
       m_Value: 0000000000000000
   m_ConvexRadius_Deprecated: -1
---- !u!114 &-4621126176432611618
+--- !u!114 &-2200421910586969310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -213,16 +214,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4245001751762680063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a55cc573cfe13af4c978bd87faa3a479, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f129a8d361f9f345bfc50122c6deaa5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialPos:
-    x: 0
-    y: 0
-    z: 0
-  dropRotation: 0
-  duration: 0
-  timeCounter: 0
-  speed: 5
-  width: 1
-  height: 7
+  damage: 3
+--- !u!114 &-7237425802011555963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245001751762680063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743db2eec1b18d943a5831aeecf3cc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

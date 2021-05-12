@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6943742081062435656}
   - component: {fileID: 6284683230202933670}
   - component: {fileID: 7371424308326352961}
+  - component: {fileID: 2060446530493930964}
   m_Layer: 0
   m_Name: GrenadeInfernaleGO
   m_TagString: Untagged
@@ -238,3 +239,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0115da2d701aa54f98639c68c96488c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2060446530493930964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6195100879612670003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f129a8d361f9f345bfc50122c6deaa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 50
