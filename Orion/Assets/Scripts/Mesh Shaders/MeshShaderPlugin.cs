@@ -31,11 +31,11 @@ public class MeshShaderPlugin : MonoBehaviour
     {
         //variation = minFactor;
         eManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        listGrass = new Grass_dos_Stats[2];
-        data = new Vector3[2 * 36];
+        listGrass = new Grass_dos_Stats[5];
+        data = new Vector3[5 * 36];
         InitialiseGrass();
 
-        buffer = new ComputeBuffer(2 * 36, sizeof(float) * 3, ComputeBufferType.Default);
+        buffer = new ComputeBuffer(5 * 36, sizeof(float) * 3, ComputeBufferType.Default);
     
 
         buffer.SetData(data);
@@ -83,7 +83,7 @@ public class MeshShaderPlugin : MonoBehaviour
     {
         mat.SetPass(0);
         mat.SetBuffer("buffer", buffer);
-        Graphics.DrawProceduralNow(MeshTopology.Triangles, 2 * 36);
+        Graphics.DrawProceduralNow(MeshTopology.Triangles, 5 * 36);
     }
 
     private void OnDestroy()
@@ -97,20 +97,13 @@ public class MeshShaderPlugin : MonoBehaviour
         settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, new BlobAssetStore());
         var convert = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefabBrin, settings);
 
-        for (float i = 0.0f; i < 10.0f; i += 1f)
+        for (float i = 0.0f; i < 10.0f; i += 2f)
         {
-            for(float j = 0.0f; j < 10.0f; j += 1f)
+            Vector3 pos = new Vector3(i, 1.6f, 0.0f);
+            if (cpt < 5)
             {
-                Vector3 pos = Vector3.zero;
-                pos.x += (i + UnityEngine.Random.Range(-0.005f, 0.005f));
-                pos.y = 1.6f;
-                pos.z += (j + UnityEngine.Random.Range(-0.005f, 0.005f));
-
-                if(cpt < 2)
-                {
-                    CreateGrass(pos, cpt, convert);
-                    cpt++;
-                }
+                CreateGrass(pos, cpt, convert);
+                cpt++;
             }
         }
         settings.BlobAssetStore.Dispose();
@@ -118,31 +111,22 @@ public class MeshShaderPlugin : MonoBehaviour
 
     private void CreateGrass(Vector3 position, int cpt, Entity c)
     {
-        float hauteur = UnityEngine.Random.Range(0.5f, 1.5f);
-        Vector3 orientation = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
-        orientation.Normalize();
-        float thickness = 0.5f; //UnityEngine.Random.Range(0.008f, 0.01f);
+        float hauteur = 1.0f; // UnityEngine.Random.Range(0.5f, 1.5f);
+        //Vector3 orientation = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
+        //orientation.Normalize();
+        float thickness = 0.25f; //UnityEngine.Random.Range(0.008f, 0.01f);
 
         //générer la géométrie du brin en fonction de la position et de la hauteur
         //palier 1
         {
-            Vector3 decal1 = orientation * thickness;
-            Vector3 decal2 = orientation * thickness;
-
-            Vector3 p1 = position + decal1;
-            Vector3 p2 = position - decal2;
-            Vector3 p3 = p1;
-            p3.y += (1.0f / 4.0f) * hauteur;
-            Vector3 p4 = p2;
-            p4.y = p3.y;
-            Vector3 p5 = p1;
-            p5.y += (2.0f / 4.0f) * hauteur;
-            Vector3 p6 = p2;
-            p6.y = p5.y;
-            Vector3 p7 = position;
-            p7.x += (thickness /2.0f) * thickness;
-            p7.y += (3.0f / 4.0f) * hauteur;
-            Vector3 p8 = new Vector3(position.x, position.y + hauteur, position.z);
+            Vector3 p1 = new Vector3(position.x + thickness, position.y, position.z);
+            Vector3 p2 = new Vector3(position.x - thickness, position.y, position.z);
+            Vector3 p3 = new Vector3(p1.x, p1.y + (1.0f / 4.0f) * hauteur, p1.z);
+            Vector3 p4 = new Vector3(p2.x, p3.y, p2.z);
+            Vector3 p5 = new Vector3(p1.x, p1.y + (2.0f / 4.0f) * hauteur, p1.z);
+            Vector3 p6 = new Vector3(p2.x, p5.y, p2.z);
+            Vector3 p7 = new Vector3(position.x + ((thickness / 2.0f) * thickness), position.y + ((3.0f / 4.0f) * hauteur), position.z);
+            Vector3 p8 = new Vector3(position.x - +((thickness / 2.0f) * thickness), position.y + hauteur, position.z);
 
             //face 1
             data[(cpt * 36) + 0] = p1;
@@ -195,14 +179,14 @@ public class MeshShaderPlugin : MonoBehaviour
             data[(cpt * 36) + 29] = p6;
 
             //face 6
-            data[(cpt * 35) + 30] = p6;
-            data[(cpt * 35) + 31] = p7;
-            data[(cpt * 35) + 32] = p8;
-                        
-            //face 6 bac
-            data[(cpt * 35) + 33] = p6;
-            data[(cpt * 35) + 34] = p8;
-            data[(cpt * 35) + 35] = p7;
+            data[(cpt * 36) + 30] = p6;
+            data[(cpt * 36) + 31] = p7;
+            data[(cpt * 36) + 32] = p8;
+                         
+            //face 6 bac 
+            data[(cpt * 36) + 33] = p6;
+            data[(cpt * 36) + 34] = p8;
+            data[(cpt * 36) + 35] = p7;
         }       
 
         var brin = eManager.Instantiate(c);
