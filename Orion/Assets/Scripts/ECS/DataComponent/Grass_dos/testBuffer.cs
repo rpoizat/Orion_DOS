@@ -17,6 +17,10 @@ public class testBuffer : MonoBehaviour
         pos[2] = new Vector3(1.0f, 0.0f, 0.0f);
         pos[1] = new Vector3(0.0f, 1.0f, 0.0f);
 
+        //pos[3] = new Vector3(0.0f, 0.0f, 0.0f);       
+        //pos[4] = new Vector3(0.0f, 1.0f, 0.0f);
+        //pos[5] = new Vector3(1.0f, 0.0f, 0.0f);
+
         buffer.SetData(pos);
     }
 

@@ -15,6 +15,7 @@ public class StopSystemsTestScript : MonoBehaviour
         eManager.World.GetExistingSystem<PlayerMovementSystem>().Enabled = false;
         eManager.World.GetExistingSystem<GrenadeMovementSystem>().Enabled = false;
         eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = false;
+        eManager.World.GetExistingSystem<ActivateTornadoSystem>().Enabled = false;
         eManager.World.GetExistingSystem<TriggerSystem>().Enabled = false;
         eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = false;
         eManager.World.GetExistingSystem<ExplosionSystem>().Enabled = false;

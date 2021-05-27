@@ -66,6 +66,7 @@ public class InGameInterfaceScript : MonoBehaviour
         eManager.World.GetExistingSystem<PlayerMovementSystem>().Enabled = true;
         eManager.World.GetExistingSystem<GrenadeMovementSystem>().Enabled = true;
         eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = true;
+        eManager.World.GetExistingSystem<ActivateTornadoSystem>().Enabled = true;
         eManager.World.GetExistingSystem<TriggerSystem>().Enabled = true;
         eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = true;
         eManager.World.GetExistingSystem<ExplosionSystem>().Enabled = true;
@@ -163,6 +164,7 @@ public class InGameInterfaceScript : MonoBehaviour
         {
             //arreter les systèmes
             eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = false;
+            eManager.World.GetExistingSystem<ActivateTornadoSystem>().Enabled = false;
             eManager.World.GetExistingSystem<PlayerMovementSystem>().Enabled = false;
             eManager.World.GetExistingSystem<GrenadeMovementSystem>().Enabled = false;
             eManager.World.GetExistingSystem<TriggerSystem>().Enabled = false;
@@ -197,6 +199,7 @@ public class InGameInterfaceScript : MonoBehaviour
             {
                 //arreter les systèmes
                 eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = false;
+                eManager.World.GetExistingSystem<ActivateTornadoSystem>().Enabled = false;
                 eManager.World.GetExistingSystem<PlayerMovementSystem>().Enabled = false;
                 eManager.World.GetExistingSystem<GrenadeMovementSystem>().Enabled = false;
                 eManager.World.GetExistingSystem<TriggerSystem>().Enabled = false;

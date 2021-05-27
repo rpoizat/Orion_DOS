@@ -24,10 +24,11 @@ public class TriggerSystem : JobComponentSystem
     {
         TriggerJob triggerJob = new TriggerJob {
 
+            drop = GetComponentDataFromEntity<WaterDropTag>(),
             playerEntity = GetComponentDataFromEntity<PlayerStatsData>(),
             bossEntity = GetComponentDataFromEntity<BossStats>(),
             explosivEntities = GetComponentDataFromEntity<ExplosionTag>(),
-            projectileEntities = GetComponentDataFromEntity<GrenadeInfernaleTag>(),
+            projectileEntities = GetComponentDataFromEntity<ProjectileTag>(true),
             playerHit = GetComponentDataFromEntity<HitTag>(),
             forceShield = GetComponentDataFromEntity<ForceShieldTag>(),
             commandBuffer = bufferSystem.CreateCommandBuffer()
@@ -57,7 +58,13 @@ public class TriggerSystem : JobComponentSystem
         [ReadOnly] public ComponentDataFromEntity<ForceShieldTag> forceShield;
 
         // Le composant qui va servire à vérifier qu'on entre bien en contacte avec une boule d'énergie générée par le boss
-        [ReadOnly] public ComponentDataFromEntity<GrenadeInfernaleTag> projectileEntities;
+        [ReadOnly] public ComponentDataFromEntity<ProjectileTag> projectileEntities;
+
+        [ReadOnly] public ComponentDataFromEntity<WaterDropTag> drop;
+
+
+
+
 
         public EntityCommandBuffer commandBuffer;
 
@@ -75,6 +82,9 @@ public class TriggerSystem : JobComponentSystem
         // Cette fonction est utilisée juste au dessus dans le corp du job : la fonction execute
         private void TestEntityTrigger(Entity entity1, Entity entity2)
         {
+
+            
+
             //si l'entité 1 est le joueur ou le boss
             if (playerEntity.HasComponent(entity1) || bossEntity.HasComponent(entity1))
             {
@@ -89,11 +99,13 @@ public class TriggerSystem : JobComponentSystem
                     //si l'entité en contact avec la grenade est le boss
                     if(bossEntity.HasComponent(entity1))
                     {
-                        commandBuffer.AddComponent(entity2, new ExplosionTag());
+                        if (!drop.HasComponent(entity2) )
+                            commandBuffer.AddComponent(entity2, new ExplosionTag());
                         return;
                     }
-                    
-                    commandBuffer.AddComponent(entity2, new ExplosionTag());
+
+                    if (!drop.HasComponent(entity2))
+                        commandBuffer.AddComponent(entity2, new ExplosionTag());
 
                     if (playerHit.HasComponent(entity1))
                     {
@@ -102,7 +114,10 @@ public class TriggerSystem : JobComponentSystem
 
                     if(!forceShield.HasComponent(entity1))
                     {
-                        commandBuffer.AddComponent(entity1, new HitTag { damage = 50 });
+
+
+                        commandBuffer.AddComponent(entity1, new HitTag { damage = projectileEntities[entity2].damage });
+
                     }
                     
                     Debug.Log("Une grenade a explosé");
