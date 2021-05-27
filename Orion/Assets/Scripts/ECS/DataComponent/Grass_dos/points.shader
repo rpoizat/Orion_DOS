@@ -15,6 +15,7 @@
             #include "UnityCG.cginc"
 
 			uniform StructuredBuffer<float3> buffer;
+			uniform StructuredBuffer<int> index;
 
             struct v2f
             {
@@ -23,7 +24,7 @@
 
             v2f vert (uint id : SV_VertexID)
             {
-				float4 pos = float4(buffer[id], 1);
+				float4 pos = float4(buffer[index[id]], 1);
 				v2f OUT;
 				OUT.vertex = UnityObjectToClipPos(pos);
 

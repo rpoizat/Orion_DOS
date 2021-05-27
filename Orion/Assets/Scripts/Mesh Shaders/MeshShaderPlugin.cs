@@ -22,7 +22,9 @@ public class MeshShaderPlugin : MonoBehaviour
     [SerializeField] private float variation;
 
     ComputeBuffer buffer;
+    ComputeBuffer index_buffer;
     Vector3[] data;
+    int[] index;
     public UnityEngine.Material mat;
 
     private bool ascend = true;
@@ -33,12 +35,16 @@ public class MeshShaderPlugin : MonoBehaviour
         eManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         listGrass = new Grass_dos_Stats[5];
         data = new Vector3[5 * 36];
+        index = new int[5 * 36];
         InitialiseGrass();
 
         buffer = new ComputeBuffer(5 * 36, sizeof(float) * 3, ComputeBufferType.Default);
-    
+        index_buffer = new ComputeBuffer(5 * 36, sizeof(int), ComputeBufferType.Default);
 
         buffer.SetData(data);
+        index_buffer.SetData(index);
+        mat.SetBuffer("buffer", buffer);
+        mat.SetBuffer("index", index_buffer);
     }
 
     //récupérer les données des brins d'herbes
@@ -82,7 +88,7 @@ public class MeshShaderPlugin : MonoBehaviour
     private void OnPostRender()
     {
         mat.SetPass(0);
-        mat.SetBuffer("buffer", buffer);
+        
         Graphics.DrawProceduralNow(MeshTopology.Triangles, 5 * 36);
     }
 
@@ -125,68 +131,70 @@ public class MeshShaderPlugin : MonoBehaviour
             Vector3 p4 = new Vector3(p2.x, p3.y, p2.z);
             Vector3 p5 = new Vector3(p1.x, p1.y + (2.0f / 4.0f) * hauteur, p1.z);
             Vector3 p6 = new Vector3(p2.x, p5.y, p2.z);
-            Vector3 p7 = new Vector3(position.x + ((thickness / 2.0f) * thickness), position.y + ((3.0f / 4.0f) * hauteur), position.z);
-            Vector3 p8 = new Vector3(position.x - +((thickness / 2.0f) * thickness), position.y + hauteur, position.z);
+            Vector3 p7 = new Vector3(position.x + ((1.0f / 2.0f) * thickness), position.y + ((3.0f / 4.0f) * hauteur), position.z);
+            Vector3 p8 = new Vector3(position.x - ((3.0f / 4.0f) * thickness), position.y + hauteur, position.z);
 
+            data[(cpt * 8) + 0] = p1;
+            data[(cpt * 8) + 1] = p2;
+            data[(cpt * 8) + 2] = p3;
+            data[(cpt * 8) + 3] = p4;
+            data[(cpt * 8) + 4] = p5;
+            data[(cpt * 8) + 5] = p6;
+            data[(cpt * 8) + 6] = p7;
+            data[(cpt * 8) + 7] = p8;
             //face 1
-            data[(cpt * 36) + 0] = p1;
-            data[(cpt * 36) + 1] = p2;
-            data[(cpt * 36) + 2] = p3;
+            index[(cpt * 36) + 0] = (cpt * 8 + 0);
+            index[(cpt * 36) + 1] = (cpt * 8 + 1);
+            index[(cpt * 36) + 2] = (cpt * 8 + 2);
                          
-            //face 1 back
-            data[(cpt * 36) + 3] = p1;
-            data[(cpt * 36) + 4] = p3;
-            data[(cpt * 36) + 5] = p2;
+            index[(cpt * 36) + 3] = (cpt * 8 + 0);
+            index[(cpt * 36) + 4] = (cpt * 8 + 2);
+            index[(cpt * 36) + 5] = (cpt * 8 + 1);
+                   
+            //face 2
+            index[(cpt * 36) + 6] = (cpt * 8 + 1);
+            index[(cpt * 36) + 7] = (cpt * 8 + 2);
+            index[(cpt * 36) + 8] = (cpt * 8 + 3);
                          
-            //face 2     
-            data[(cpt * 36) + 6] = p2;
-            data[(cpt * 36) + 7] = p3;
-            data[(cpt * 36) + 8] = p4;
-                         
-            //face 2 bac 
-            data[(cpt * 36) + 9] = p2;
-            data[(cpt * 36) + 10] = p4;
-            data[(cpt * 36) + 11] = p3;
-                         
-            //face 3     
-            data[(cpt * 36) + 12] = p3;
-            data[(cpt * 36) + 13] = p4;
-            data[(cpt * 36) + 14] = p5;
-                         
-            //face 3 bac 
-            data[(cpt * 36) + 15] = p3;
-            data[(cpt * 36) + 16] = p5;
-            data[(cpt * 36) + 17] = p4;
-                         
-            //face 4     
-            data[(cpt * 36) + 18] = p4;
-            data[(cpt * 36) + 19] = p5;
-            data[(cpt * 36) + 20] = p6;
-                         
-            //face 4 bac 
-            data[(cpt * 36) + 21] = p4;
-            data[(cpt * 36) + 22] = p6;
-            data[(cpt * 36) + 23] = p5;
-                         
-            //face 5     
-            data[(cpt * 36) + 24] = p5;
-            data[(cpt * 36) + 25] = p6;
-            data[(cpt * 36) + 26] = p7;
-                         
-            //face 5 bac 
-            data[(cpt * 36) + 27] = p5;
-            data[(cpt * 36) + 28] = p7;
-            data[(cpt * 36) + 29] = p6;
+            index[(cpt * 36) + 9] = (cpt * 8 + 1);
+            index[(cpt * 36) + 10] = (cpt * 8 + 3);
+            index[(cpt * 36) + 11] = (cpt * 8 + 2);
+
+            //face 3
+            index[(cpt * 36) + 12] = (cpt * 8 + 2);
+            index[(cpt * 36) + 13] = (cpt * 8 + 3);
+            index[(cpt * 36) + 14] = (cpt * 8 + 4);
+
+            index[(cpt * 36) + 15] = (cpt * 8 + 2);
+            index[(cpt * 36) + 16] = (cpt * 8 + 4);
+            index[(cpt * 36) + 17] = (cpt * 8 + 3);
+
+            //face 4
+            index[(cpt * 36) + 18] = (cpt * 8 + 3);
+            index[(cpt * 36) + 19] = (cpt * 8 + 4);
+            index[(cpt * 36) + 20] = (cpt * 8 + 5);
+
+            index[(cpt * 36) + 21] = (cpt * 8 + 3);
+            index[(cpt * 36) + 22] = (cpt * 8 + 5);
+            index[(cpt * 36) + 23] = (cpt * 8 + 4);
+
+            //face 5
+            index[(cpt * 36) + 24] = (cpt * 8 + 4);
+            index[(cpt * 36) + 25] = (cpt * 8 + 5);
+            index[(cpt * 36) + 26] = (cpt * 8 + 6);
+
+            index[(cpt * 36) + 27] = (cpt * 8 + 4);
+            index[(cpt * 36) + 28] = (cpt * 8 + 6);
+            index[(cpt * 36) + 29] = (cpt * 8 + 5);
 
             //face 6
-            data[(cpt * 36) + 30] = p6;
-            data[(cpt * 36) + 31] = p7;
-            data[(cpt * 36) + 32] = p8;
-                         
-            //face 6 bac 
-            data[(cpt * 36) + 33] = p6;
-            data[(cpt * 36) + 34] = p8;
-            data[(cpt * 36) + 35] = p7;
+            index[(cpt * 36) + 30] = (cpt * 8 + 5);
+            index[(cpt * 36) + 31] = (cpt * 8 + 6);
+            index[(cpt * 36) + 32] = (cpt * 8 + 7);
+
+            index[(cpt * 36) + 33] = (cpt * 8 + 5);
+            index[(cpt * 36) + 34] = (cpt * 8 + 7);
+            index[(cpt * 36) + 35] = (cpt * 8 + 6);
         }       
 
         var brin = eManager.Instantiate(c);
