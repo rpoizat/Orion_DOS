@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\EB-El\.Rider2019.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\EB-El\.Rider2019.3\system\resharper-host\local\Transient\ReSharperHost\v193\SolutionCaches\_Orion.-55054763.00" t="ExcludeRecursive" />
+    <e p="F:\Projet 2021\Son of Orion\Orion_DOS\Orion" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="HUD&amp;GUI MEDIEVAL ART BUNDLE" t="Include">
+          <e p="Demo" t="Include">
+            <e p="Scripts" t="Include">
+              <e p="ButtonDisabler.cs" t="Include" />
+              <e p="ButtonImageOnClick.cs" t="Include" />
+              <e p="CastAnimationButton.cs" t="Include" />
+              <e p="FillBySlider.cs" t="Include" />
+              <e p="GathererLayout.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="saveBuildPlayer.txt" t="Include" />
+        <e p="Scripts" t="Include">
+          <e p="Boss" t="Include">
+            <e p="ActivateGlobalAttack.cs" t="Include" />
+          </e>
+          <e p="BossAnimation.cs" t="Include" />
+          <e p="ConvertedEntityHolder.cs" t="Include" />
+          <e p="DiablotinAnimationScript.cs" t="Include" />
+          <e p="ECS" t="Include">
+            <e p="DataComponent" t="Include">
+              <e p="BossStats.cs" t="Include" />
+              <e p="CameraTag.cs" t="Include" />
+              <e p="CompetenceTags" t="Include">
+                <e p="ForceShieldTag.cs" t="Include" />
+                <e p="ShieldTag.cs" t="Include" />
+              </e>
+              <e p="DeadTag.cs" t="Include" />
+              <e p="ExplosionTag.cs" t="Include" />
+              <e p="Grass_dos" t="Include">
+                <e p="Grass_dos_Stats.cs" t="Include" />
+                <e p="points.shader" t="Include" />
+                <e p="testBuffer.cs" t="Include" />
+              </e>
+              <e p="GrassStats.cs" t="Include" />
+              <e p="GrassTag.cs" t="Include" />
+              <e p="GrenadeInfernaleTag.cs" t="Include" />
+              <e p="HitTag.cs" t="Include" />
+              <e p="MovementData.cs" t="Include" />
+              <e p="PlayerStatsData.cs" t="Include" />
+              <e p="PlayerTag.cs" t="Include" />
+            </e>
+            <e p="PrefabEntityComponent.cs" t="Include" />
+            <e p="Systems" t="Include">
+              <e p="ActivateGlobalAttackSystem.cs" t="Include" />
+              <e p="ExplosionSystem.cs" t="Include" />
+              <e p="GrassSystem" t="Include">
+                <e p="StopSystemsTestScript.cs" t="Include" />
+              </e>
+              <e p="GrenadeMovementSystem.cs" t="Include" />
+              <e p="HitBossCollisionSystem.cs" t="Include" />
+              <e p="ItemSystems" t="Include">
+                <e p="ActivateShieldSystem.cs" t="Include" />
+                <e p="ForceShieldSystem.cs" t="Include" />
+              </e>
+              <e p="PlayerMovementSystem.cs" t="Include" />
+              <e p="TriggerSystem.cs" t="Include" />
+            </e>
+          </e>
+          <e p="Interfaces" t="Include">
+            <e p="EcranChoixMissions.cs" t="Include" />
+            <e p="EcranEquipementScript.cs" t="Include" />
+            <e p="EcranFinMissionScript.cs" t="Include" />
+            <e p="EcranTitreInterfaceScript.cs" t="Include" />
+            <e p="GestionMenu.cs" t="Include" />
+            <e p="InGameInterfaceScript.cs" t="Include" />
+            <e p="ScrollMissionScript.cs" t="Include" />
+            <e p="ScrollRectGPScript.cs" t="Include" />
+          </e>
+          <e p="Inventaire" t="Include">
+            <e p="InventaireManagerScript.cs" t="Include" />
+            <e p="ItemScript.cs" t="Include" />
+          </e>
+          <e p="Mesh Shaders" t="Include">
+            <e p="MeshShaderPlugin.cs" t="Include" />
+          </e>
+          <e p="MeshShaderTest" t="Include">
+            <e p="MeshShaderPlugin.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Orion.sln" t="IncludeFlat" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
