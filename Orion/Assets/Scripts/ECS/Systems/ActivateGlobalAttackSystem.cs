@@ -1,10 +1,11 @@
 ﻿using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
+using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 public class ActivateGlobalAttackSystem : ComponentSystem
 {
-
     private float spawnTimer;
     private Random random;
 

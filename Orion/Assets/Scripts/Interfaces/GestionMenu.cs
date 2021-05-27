@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using Unity.Entities;
 
 [Serializable]
 public struct Ligne
