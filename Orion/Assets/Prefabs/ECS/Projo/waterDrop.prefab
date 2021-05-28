@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7715350993393781468}
   - component: {fileID: 5240335671002774850}
   - component: {fileID: -2200421910586969310}
-  - component: {fileID: -7237425802011555963}
   m_Layer: 0
   m_Name: waterDrop
   m_TagString: Untagged
@@ -218,15 +217,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 3
---- !u!114 &-7237425802011555963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4245001751762680063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 743db2eec1b18d943a5831aeecf3cc7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

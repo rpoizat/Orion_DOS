@@ -58,6 +58,9 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 0 });
+
+
             }
 
             radius = radius - 0.5f;
@@ -74,6 +77,9 @@ public class ActivateWaterNovaSystem : JobComponentSystem
                 EntityManager.SetComponentData(spawnedEntity, new Translation { Value = newPos });
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
+
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 1 });
+
 
             }
 
@@ -92,6 +98,9 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 2 });
+
+
             }
 
             radius = radius - 0.5f;
@@ -108,6 +117,9 @@ public class ActivateWaterNovaSystem : JobComponentSystem
                 EntityManager.SetComponentData(spawnedEntity, new Translation { Value = newPos });
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
+
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 3 });
+
 
             }
 
@@ -126,6 +138,9 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 4 });
+
+                
             }
 
             drap = false;

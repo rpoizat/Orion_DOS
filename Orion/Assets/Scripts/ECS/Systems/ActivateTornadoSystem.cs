@@ -44,6 +44,7 @@ public class ActivateTornadoSystem : JobComponentSystem
 
                 EntityManager.SetComponentData(spawnedEntity, new Translation { Value = new float3(position.x, position.y + (0.10f * i), position.z) });
 
+                commandBuffer.AddComponent(spawnedEntity, new WaterDropTag());
 
                 if (drap)
                 {

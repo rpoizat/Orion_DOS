@@ -86,7 +86,7 @@ public class TriggerSystem : JobComponentSystem
             
 
             //si l'entité 1 est le joueur ou le boss
-            if (playerEntity.HasComponent(entity1) || bossEntity.HasComponent(entity1))
+            if (playerEntity.HasComponent(entity1) /*|| bossEntity.HasComponent(entity1)*/)
             {
                 if(projectileEntities.HasComponent(entity2))
                 {
@@ -97,12 +97,12 @@ public class TriggerSystem : JobComponentSystem
                     }
 
                     //si l'entité en contact avec la grenade est le boss
-                    if(bossEntity.HasComponent(entity1))
+                    /*if(bossEntity.HasComponent(entity1))
                     {
                         if (!drop.HasComponent(entity2) )
                             commandBuffer.AddComponent(entity2, new ExplosionTag());
                         return;
-                    }
+                    }*/
 
                     if (!drop.HasComponent(entity2))
                         commandBuffer.AddComponent(entity2, new ExplosionTag());

@@ -46,6 +46,8 @@ public class TornadoMovementSystem : JobComponentSystem
             if (tornadoMovementData.duration <= 0)
             {
                 commandBuffer.AddComponent<ExplosionTag>(e);
+
+
             }
 
 
