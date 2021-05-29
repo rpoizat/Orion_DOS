@@ -1,31 +1,31 @@
-﻿Shader "Unlit/points"
+﻿Shader "Unlit/contour"
 {
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" }
+	SubShader
+	{
+		Tags { "RenderType" = "Opaque" }
 
-        Pass
-        {
+		Pass
+		{
 			Fog{ Mode off }
 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
 
-            #include "UnityCG.cginc"
+			#include "UnityCG.cginc"
 
 			uniform StructuredBuffer<float3> buffer;
 			uniform StructuredBuffer<int> index;
 			uniform StructuredBuffer<float> windResistance;
 			uniform float3 wind;
 
-            struct v2f
-            {
-                float4 vertex : SV_POSITION;
-            };
+			struct v2f
+			{
+				float4 vertex : SV_POSITION;
+			};
 
-            v2f vert (uint id : SV_VertexID)
-            {
+			v2f vert(uint id : SV_VertexID)
+			{
 				uint nbBrin = index[id] / uint(8);
 				uint palier = index[id] % uint(8);
 				float3 w = wind * windResistance[nbBrin];
@@ -33,7 +33,7 @@
 				if (palier < 2)
 				{
 					w = w * 0.0f;
-				}			
+				}
 				else
 				{
 					if (palier < 4)
@@ -64,15 +64,15 @@
 				v2f OUT;
 				OUT.vertex = UnityObjectToClipPos(pos);
 
-                return OUT;
-            }
+				return OUT;
+			}
 
-            fixed4 frag (v2f i) : SV_Target
-            {
-				return float4(0, 1, 0, 1);
-            }
+			fixed4 frag(v2f i) : SV_Target
+			{
+				return float4(0.0f, 0.1f, 0.0f, 1.0f);
+			}
 
-            ENDCG
-        }
-    }
+			ENDCG
+		}
+	}
 }

@@ -586,7 +586,8 @@ MonoBehaviour:
   mainCamera: {fileID: 1987664976}
   prefabBrin: {fileID: 3592455507213773861, guid: a0a11d05ac00f5143b511d8521e778f2,
     type: 3}
-  ventMax: {x: 0, y: 0, z: 0}
-  minFactor: 0
-  variation: 0
+  ventMax: {x: 1, y: 0, z: 1}
+  intensite: 5
   mat: {fileID: 2100000, guid: 2df837ce8a91511498f4b146c21b0daa, type: 2}
+  contours: {fileID: 2100000, guid: 75be1685b8dbe5a4dacd0cfeffb8e809, type: 2}
+  nbbrins: 1000000

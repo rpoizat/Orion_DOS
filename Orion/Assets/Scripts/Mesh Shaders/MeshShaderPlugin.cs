@@ -9,8 +9,6 @@ using Unity.Mathematics;
 
 public class MeshShaderPlugin : MonoBehaviour
 {
-    [DllImport("MeshShaderPlugin")]
-    static extern IntPtr Execute();
     EntityManager eManager;
     private GameObjectConversionSettings settings;
     Grass_dos_Stats[] listGrass;
@@ -18,83 +16,66 @@ public class MeshShaderPlugin : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject prefabBrin;
     [SerializeField] private Vector3 ventMax;
-    [SerializeField] private float minFactor;
-    [SerializeField] private float variation;
+    [SerializeField] private float intensite;
+    private float variation;
 
     ComputeBuffer buffer;
     ComputeBuffer index_buffer;
+    ComputeBuffer windResistance;
+
     Vector3[] data;
     int[] index;
+    float[] windR;
     public UnityEngine.Material mat;
-
-    private bool ascend = true;
+    public UnityEngine.Material contours;
+    public int nbbrins;
  
     private void Start()
     {
         //variation = minFactor;
         eManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        listGrass = new Grass_dos_Stats[5];
-        data = new Vector3[5 * 36];
-        index = new int[5 * 36];
+        listGrass = new Grass_dos_Stats[nbbrins];
+        data = new Vector3[nbbrins * 36];
+        index = new int[nbbrins * 36];
+        windR = new float[nbbrins];
         InitialiseGrass();
 
-        buffer = new ComputeBuffer(5 * 36, sizeof(float) * 3, ComputeBufferType.Default);
-        index_buffer = new ComputeBuffer(5 * 36, sizeof(int), ComputeBufferType.Default);
+        buffer = new ComputeBuffer(nbbrins * 36, sizeof(float) * 3, ComputeBufferType.Default);
+        index_buffer = new ComputeBuffer(nbbrins * 36, sizeof(int), ComputeBufferType.Default);
+        windResistance = new ComputeBuffer(nbbrins, sizeof(float), ComputeBufferType.Default);
 
         buffer.SetData(data);
         index_buffer.SetData(index);
+        windResistance.SetData(windR);
+
         mat.SetBuffer("buffer", buffer);
         mat.SetBuffer("index", index_buffer);
-    }
+        mat.SetBuffer("windResistance", windResistance);
 
-    //récupérer les données des brins d'herbes
-    private void Update()
-    {
-        //GESTION DU VENT
-        //phase ascendante du vent
-        if (ascend)
-        {
-            if (variation > 0.9f)
-            {
-                //accélération ralentie sur la fin
-                variation += 0.001f;
-            }
-            else
-            {
-                //accélération normale
-                variation += 0.005f;
-            }
-
-            if (variation > 1.0f) ascend = false;
-        }
-        else
-        {
-            //phase descendante du vent
-            if (variation < minFactor + 0.1f)
-            {
-                //décélération ralentie sur la fin
-                variation -= 0.001f;
-            }
-            else
-            {
-                //décélération normale
-                variation -= 0.005f;
-            }
-
-            if (variation < minFactor) ascend = true;
-        }
+        contours.SetBuffer("buffer", buffer);
+        contours.SetBuffer("index", index_buffer);
+        contours.SetBuffer("windResistance", windResistance);
     }
 
     private void OnPostRender()
     {
+        variation = (Mathf.Sin(Time.time) / intensite) + 0.3f;
+        Vector3 v = variation * ventMax.normalized;
+        mat.SetVector("wind", v);
         mat.SetPass(0);
         
-        Graphics.DrawProceduralNow(MeshTopology.Triangles, 5 * 36);
+        Graphics.DrawProceduralNow(MeshTopology.Triangles, nbbrins * 36);
+
+        contours.SetVector("wind", v);
+        contours.SetPass(0);
+        Graphics.DrawProceduralNow(MeshTopology.Lines, nbbrins * 36);
     }
 
     private void OnDestroy()
     {
         buffer.Release();
+        index_buffer.Release();
+        windResistance.Release();
     }
 
     private void InitialiseGrass()
@@ -103,36 +84,46 @@ public class MeshShaderPlugin : MonoBehaviour
         settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, new BlobAssetStore());
         var convert = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefabBrin, settings);
 
-        for (float i = 0.0f; i < 10.0f; i += 2f)
+        for (float i = 0.0f; i < 200.0f; i += 0.1f)
         {
-            Vector3 pos = new Vector3(i, 1.6f, 0.0f);
-            if (cpt < 5)
+            for(float j = 0.0f; j < 100.0f; j += 0.1f)
             {
-                CreateGrass(pos, cpt, convert);
-                cpt++;
+                float x = i + UnityEngine.Random.Range(0.05f, 0.2f);
+                float z = j + UnityEngine.Random.Range(0.05f, 0.2f);
+
+                Vector3 pos = new Vector3(x, 1.6f, z);
+                if (cpt < nbbrins)
+                {
+                    CreateGrass(pos, cpt, convert);
+                    cpt++;
+                }
             }
+            
         }
         settings.BlobAssetStore.Dispose();
     }
 
     private void CreateGrass(Vector3 position, int cpt, Entity c)
     {
-        float hauteur = 1.0f; // UnityEngine.Random.Range(0.5f, 1.5f);
-        //Vector3 orientation = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
-        //orientation.Normalize();
-        float thickness = 0.25f; //UnityEngine.Random.Range(0.008f, 0.01f);
+        float hauteur = UnityEngine.Random.Range(0.5f, 1.5f);
+        Vector3 orientation = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
+        orientation.Normalize();
+        float thickness = UnityEngine.Random.Range(0.01f, 0.05f);
 
         //générer la géométrie du brin en fonction de la position et de la hauteur
         //palier 1
         {
-            Vector3 p1 = new Vector3(position.x + thickness, position.y, position.z);
-            Vector3 p2 = new Vector3(position.x - thickness, position.y, position.z);
+            Vector3 d1 = thickness * orientation;
+            Vector3 d2 = (0.5f * thickness) * orientation;
+            Vector3 p1 = position + d1;
+            Vector3 p2 = position - d1;
             Vector3 p3 = new Vector3(p1.x, p1.y + (1.0f / 4.0f) * hauteur, p1.z);
             Vector3 p4 = new Vector3(p2.x, p3.y, p2.z);
             Vector3 p5 = new Vector3(p1.x, p1.y + (2.0f / 4.0f) * hauteur, p1.z);
             Vector3 p6 = new Vector3(p2.x, p5.y, p2.z);
-            Vector3 p7 = new Vector3(position.x + ((1.0f / 2.0f) * thickness), position.y + ((3.0f / 4.0f) * hauteur), position.z);
-            Vector3 p8 = new Vector3(position.x - ((3.0f / 4.0f) * thickness), position.y + hauteur, position.z);
+            Vector3 p7 = position + d2;
+            p7.y += (3.0f / 4.0f) * hauteur;
+            Vector3 p8 = new Vector3(position.x, position.y + hauteur, position.z);
 
             data[(cpt * 8) + 0] = p1;
             data[(cpt * 8) + 1] = p2;
@@ -199,7 +190,9 @@ public class MeshShaderPlugin : MonoBehaviour
 
         var brin = eManager.Instantiate(c);
         eManager.SetName(brin, "brin" + cpt);
-        eManager.SetComponentData<Grass_dos_Stats>(brin, new Grass_dos_Stats {positionX = position.x, positionY = position.y, positionZ = position.z, exist = true, height = hauteur, windResistance = UnityEngine.Random.Range(0.8f, 1.0f)});
+        float wr = UnityEngine.Random.Range(0.2f, 2.0f);
+        windR[cpt] = wr;
+        eManager.SetComponentData<Grass_dos_Stats>(brin, new Grass_dos_Stats {positionX = position.x, positionY = position.y, positionZ = position.z, exist = true, height = hauteur, windResistance = wr});
         eManager.SetComponentData(brin, new Translation { Value = position });
     }
 }
