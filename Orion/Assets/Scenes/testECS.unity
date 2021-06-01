@@ -505,6 +505,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ConversionMode: 0
+--- !u!1 &793475173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 793475175}
+  - component: {fileID: 793475174}
+  m_Layer: 0
+  m_Name: BossIa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &793475174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793475173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e9d6a8b5c5bd545a358a11c6edcf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _motivated: 0
+  _gotTime: 0
+  cookingTime: 10
+  cookingCounter: 0
+  executeTime: 1
+  executeCounter: 0
+  rangePlayerBoss: 0
+  cdSpell1: 0
+  cdSpell2: 0
+  timeLeftSpell1: 0
+  timeLeftSpell2: 0
+--- !u!4 &793475175
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793475173}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -80.42467, y: -55.616497, z: -103.40707}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &800534945 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 800534945, guid: c57c9ae26f2ab1d41b836e90d7fe41db,

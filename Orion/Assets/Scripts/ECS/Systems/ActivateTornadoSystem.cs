@@ -16,15 +16,30 @@ public class ActivateTornadoSystem : JobComponentSystem
     private Unity.Mathematics.Random random;
     private float3 position;
 
+
     protected override void OnCreate()
     {
         random = new Unity.Mathematics.Random(56);
     }
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
+
+        float deltatime = Time.DeltaTime;
+
+        bool drapcastSpell2 = false;
         EntityCommandBuffer commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
 
-        if (spawnTimer >= 5f)
+        Entities.ForEach((Entity e, ref Translation translation, ref BossStats bossStats, ref Spell2Available castSpell2) =>
+        {
+            drapcastSpell2 = true;
+            commandBuffer.RemoveComponent<Spell2Available>(e);
+
+            bossStats.timeLeftSpell2 = bossStats.cdSpell2;
+            WaterBossBehaviourTree._instance.timeLeftSpell2 = bossStats.timeLeftSpell2;
+
+        }).Run();
+
+        if (drapcastSpell2)
         {
 
 
@@ -65,7 +80,17 @@ public class ActivateTornadoSystem : JobComponentSystem
 
         }
 
-        spawnTimer = spawnTimer + Time.DeltaTime;
+        Entities.ForEach((Entity e, ref Translation translation, ref BossStats bossStats, ref Spell2Available castSpell2) =>
+        {
+
+            if (bossStats.timeLeftSpell2 >= 0)
+            {
+                bossStats.timeLeftSpell2 = bossStats.timeLeftSpell2 - deltatime;
+                WaterBossBehaviourTree._instance.timeLeftSpell2 = bossStats.timeLeftSpell2;
+            }
+
+
+        }).Run();
 
         commandBuffer.Playback(EntityManager);
         commandBuffer.Dispose();
