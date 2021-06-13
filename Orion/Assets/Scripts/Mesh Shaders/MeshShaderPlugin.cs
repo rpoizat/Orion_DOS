@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System;
-using System.Collections;
-using System.Runtime.InteropServices;
 using Unity.Entities;
 using Unity.Physics;
 using Unity.Transforms;
@@ -13,7 +10,7 @@ public class MeshShaderPlugin : MonoBehaviour
     private GameObjectConversionSettings settings;
     Grass_dos_Stats[] listGrass;
 
-    [SerializeField] private Camera mainCamera;
+    //[SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject prefabBrin;
     [SerializeField] private Vector3 ventMax;
     [SerializeField] private float intensite;
@@ -22,6 +19,7 @@ public class MeshShaderPlugin : MonoBehaviour
     ComputeBuffer buffer;
     ComputeBuffer index_buffer;
     ComputeBuffer windResistance;
+    ComputeBuffer force_buffer;
 
     Vector3[] data;
     int[] index;
@@ -32,6 +30,8 @@ public class MeshShaderPlugin : MonoBehaviour
  
     private void Start()
     {
+        Camera.onPostRender += OnPostRenderCallback;
+
         //variation = minFactor;
         eManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         listGrass = new Grass_dos_Stats[nbbrins];
@@ -43,21 +43,22 @@ public class MeshShaderPlugin : MonoBehaviour
         buffer = new ComputeBuffer(nbbrins * 36, sizeof(float) * 3, ComputeBufferType.Default);
         index_buffer = new ComputeBuffer(nbbrins * 36, sizeof(int), ComputeBufferType.Default);
         windResistance = new ComputeBuffer(nbbrins, sizeof(float), ComputeBufferType.Default);
+        force_buffer = new ComputeBuffer(nbbrins, sizeof(float) * 3, ComputeBufferType.Default);
 
         buffer.SetData(data);
         index_buffer.SetData(index);
         windResistance.SetData(windR);
 
-        mat.SetBuffer("buffer", buffer);
-        mat.SetBuffer("index", index_buffer);
-        mat.SetBuffer("windResistance", windResistance);
+        Shader.SetGlobalBuffer("buffer", buffer);
+        Shader.SetGlobalBuffer("index", index_buffer);
+        Shader.SetGlobalBuffer("windResistance", windResistance);
 
-        contours.SetBuffer("buffer", buffer);
-        contours.SetBuffer("index", index_buffer);
-        contours.SetBuffer("windResistance", windResistance);
+        data = null;
+        index = null;
+        windR = null;
     }
 
-    private void OnPostRender()
+    private void OnPostRenderCallback(Camera cam)
     {
         variation = (Mathf.Sin(Time.time) / intensite) + 0.3f;
         Vector3 v = variation * ventMax.normalized;
@@ -76,6 +77,9 @@ public class MeshShaderPlugin : MonoBehaviour
         buffer.Release();
         index_buffer.Release();
         windResistance.Release();
+        force_buffer.Release();
+
+        Camera.onPostRender -= OnPostRenderCallback;
     }
 
     private void InitialiseGrass()
@@ -84,14 +88,14 @@ public class MeshShaderPlugin : MonoBehaviour
         settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, new BlobAssetStore());
         var convert = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefabBrin, settings);
 
-        for (float i = 0.0f; i < 200.0f; i += 0.1f)
+        for (float i = -100.0f; i < 100.0f; i += 0.1f)
         {
-            for(float j = 0.0f; j < 100.0f; j += 0.1f)
+            for(float j = -50.0f; j < 50.0f; j += 0.1f)
             {
                 float x = i + UnityEngine.Random.Range(0.05f, 0.2f);
                 float z = j + UnityEngine.Random.Range(0.05f, 0.2f);
 
-                Vector3 pos = new Vector3(x, 1.6f, z);
+                Vector3 pos = new Vector3(x, -0.5f, z);
                 if (cpt < nbbrins)
                 {
                     CreateGrass(pos, cpt, convert);
@@ -105,7 +109,7 @@ public class MeshShaderPlugin : MonoBehaviour
 
     private void CreateGrass(Vector3 position, int cpt, Entity c)
     {
-        float hauteur = UnityEngine.Random.Range(0.5f, 1.5f);
+        float hauteur = UnityEngine.Random.Range(0.2f, 1.0f);
         Vector3 orientation = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0.0f, UnityEngine.Random.Range(-1.0f, 1.0f));
         orientation.Normalize();
         float thickness = UnityEngine.Random.Range(0.01f, 0.05f);

@@ -1,6 +1,11 @@
 ﻿Shader "Unlit/contour"
 {
-	SubShader
+	Properties
+	{
+		_LineColor("LineColor", Vector) = (0.0, 0.5, 0.0, 1.0)
+	}
+
+		SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
 
@@ -13,7 +18,7 @@
 			#pragma fragment frag
 
 			#include "UnityCG.cginc"
-
+			float4 _LineColor;
 			uniform StructuredBuffer<float3> buffer;
 			uniform StructuredBuffer<int> index;
 			uniform StructuredBuffer<float> windResistance;
@@ -69,7 +74,7 @@
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				return float4(0.0f, 0.1f, 0.0f, 1.0f);
+				return _LineColor;
 			}
 
 			ENDCG

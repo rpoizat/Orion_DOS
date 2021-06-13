@@ -1,5 +1,4 @@
 ﻿using Unity.Entities;
-using UnityEngine;
 
 [GenerateAuthoringComponent]
 public struct Grass_dos_Stats : IComponentData

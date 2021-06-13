@@ -20,4 +20,6 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats: []
-    m_Colors: []
+    m_Colors:
+    - _GrassColor: {r: 0, g: 0.5, b: 0, a: 1}
+    - _LineColor: {r: 0, g: 0.5, b: 0, a: 1}

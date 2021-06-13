@@ -1,22 +1,27 @@
 ﻿Shader "Unlit/points"
 {
-    SubShader
-    {
-        Tags { "RenderType"="Opaque" }
+	Properties
+	{
+		_GrassColor ("GrassColor", Vector) = (0.0, 0.75, 0.0, 1.0)
+	}
 
-        Pass
-        {
+		SubShader
+	{
+		Tags { "RenderType" = "Opaque" }
+
+		Pass
+		{
 			Fog{ Mode off }
 
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
+			CGPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
 
-            #include "UnityCG.cginc"
-
+			#include "UnityCG.cginc"
+			float4 _GrassColor;
 			uniform StructuredBuffer<float3> buffer;
-			uniform StructuredBuffer<int> index;
 			uniform StructuredBuffer<float> windResistance;
+			uniform StructuredBuffer<int> index;
 			uniform float3 wind;
 
             struct v2f
@@ -69,7 +74,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-				return float4(0, 1, 0, 1);
+				return _GrassColor;
             }
 
             ENDCG
