@@ -40,9 +40,10 @@ public class InGameInterfaceScript : MonoBehaviour
 
         //paramétrage du boss
         boss = eManager.Instantiate(convert);
+        WaterBossBehaviourTree._instance.boss = boss;
         eManager.SetName(boss, "Boss");
         Vector3 pos = new Vector3(0, 1.7f, 0);
-        eManager.SetComponentData(boss, new BossStats { health = pvBoss });
+        eManager.SetComponentData(boss, new BossStats { health = pvBoss, cdSpell1 = 10, cdSpell2 = 5, timeLeftSpell1 = 0, timeLeftSpell2 = 0 });
         eManager.SetComponentData(boss, new Translation { Value = pos });
         bossBar.maxValue = pvBoss;
 
@@ -65,7 +66,7 @@ public class InGameInterfaceScript : MonoBehaviour
         //lancer les systèmes
         eManager.World.GetExistingSystem<PlayerMovementSystem>().Enabled = true;
         eManager.World.GetExistingSystem<GrenadeMovementSystem>().Enabled = true;
-        eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = true;
+        eManager.World.GetExistingSystem<ActivateGlobalAttackSystem>().Enabled = false;
         eManager.World.GetExistingSystem<ActivateTornadoSystem>().Enabled = true;
         eManager.World.GetExistingSystem<TriggerSystem>().Enabled = true;
         eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = true;

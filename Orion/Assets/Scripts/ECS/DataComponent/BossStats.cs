@@ -10,4 +10,13 @@ public struct BossStats : IComponentData
 
     public int health;
 
+    public float cdSpell1;
+
+    public float cdSpell2;
+
+    public float timeLeftSpell1;
+
+    public float timeLeftSpell2;
+
+
 }

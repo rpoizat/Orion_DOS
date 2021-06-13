@@ -17,24 +17,33 @@ public class ActivateWaterNovaSystem : JobComponentSystem
     private float spawnTimer = 0f;
     private Unity.Mathematics.Random random;
     private float3 position;
-    private bool drap;
+
+   
 
     protected override void OnCreate()
     {
         random = new Unity.Mathematics.Random(56);
 
-         drap = true;
+        
+
+   
     }
     protected override JobHandle OnUpdate(JobHandle inputDeps)
     {
         EntityCommandBuffer commandBuffer = new EntityCommandBuffer(Allocator.TempJob);
-
+        float deltatime = Time.DeltaTime;
         Vector3 bossPosition = new Vector3();
-
-        Entities.ForEach((Entity e, ref Translation translation, ref Rotation rotation, ref BossStats bossStats) =>
+        bool drap = false;
+        Entities.ForEach((Entity e, ref Translation translation,ref BossStats bossStats, ref Spell1Available castSpell1) =>
         {
             bossPosition = translation.Value;
-            
+            drap = true;
+
+            bossStats.timeLeftSpell1 = bossStats.cdSpell1;
+            WaterBossBehaviourTree._instance.timeLeftSpell1 = bossStats.timeLeftSpell1;
+
+            commandBuffer.RemoveComponent<Spell1Available>(e);
+
         }).Run();
 
 
@@ -58,7 +67,7 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
-                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 0 });
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 1, speed = 40, angle = angle, radius = radius, height = 0 });
 
 
             }
@@ -78,7 +87,7 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
-                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 1 });
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 1, speed = 40, angle = angle, radius = radius, height = 1 });
 
 
             }
@@ -98,7 +107,7 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
-                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 2 });
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 1, speed = 40, angle = angle, radius = radius, height = 2 });
 
 
             }
@@ -118,7 +127,7 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
-                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 3 });
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 1, speed = 40, angle = angle, radius = radius, height = 3 });
 
 
             }
@@ -138,17 +147,31 @@ public class ActivateWaterNovaSystem : JobComponentSystem
 
                 commandBuffer.AddComponent(spawnedEntity, new ProjectileTag { damage = 50 });
 
-                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 5, speed = 10, angle = angle, radius = radius, height = 4 });
+                commandBuffer.AddComponent(spawnedEntity, new WaterNovaMovementData { duration = 5, direction = -(bossPosition - newPos), channelingTime = 1, speed = 40, angle = angle, radius = radius, height = 4 });
 
                 
             }
 
             drap = false;
 
-        }
-      
+            
 
-        //spawnTimer = spawnTimer + Time.DeltaTime;
+        }
+
+
+        Entities.ForEach((Entity e, ref Translation translation, ref BossStats bossStats, ref Spell1Available castSpell1) =>
+        {
+
+            
+
+            if (bossStats.timeLeftSpell1 >= 0)
+            {
+                bossStats.timeLeftSpell1 = bossStats.timeLeftSpell1 - deltatime;
+                WaterBossBehaviourTree._instance.timeLeftSpell1 = bossStats.timeLeftSpell1;
+            }
+            
+
+        }).Run();
 
         commandBuffer.Playback(EntityManager);
         commandBuffer.Dispose();
