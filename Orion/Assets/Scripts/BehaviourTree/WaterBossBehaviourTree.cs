@@ -6,7 +6,7 @@ using Unity.Entities;
 
 public class WaterBossBehaviourTree : MonoBehaviour
 {
-
+    public InGameInterfaceScript ingame_interface;
     public static WaterBossBehaviourTree _instance;
 
     void Awake()
@@ -119,7 +119,7 @@ public class WaterBossBehaviourTree : MonoBehaviour
 
     }
 
-   
+  
     void Start()
     {
         Nodes cac = new Nodes(testCaC, baseNodeType.Condition);
@@ -161,11 +161,12 @@ public class WaterBossBehaviourTree : MonoBehaviour
 
     private void Update()
     {
- 
+        if(ingame_interface.gameObject.activeSelf)
+        {
             states result = behaviourTree.Execute();
             behaviourTree.Initialize();
 
-        print(" update du tree");
-
+            print(" update du tree");
+        }
     }
 }

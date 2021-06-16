@@ -21,4 +21,4 @@ Material:
     m_TexEnvs: []
     m_Floats: []
     m_Colors:
-    - _GrassColor: {r: 0, g: 0.75, b: 0, a: 1}
+    - _GrassColor: {r: 0, g: 0.54, b: 0, a: 1}

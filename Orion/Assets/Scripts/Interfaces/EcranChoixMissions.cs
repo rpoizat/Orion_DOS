@@ -218,6 +218,7 @@ public class EcranChoixMissions : GestionMenu
             ingameInterface.LancerMission(listeDesMissions[index].boss, listeDesMissions[index].pvBoss);
             background.SetActive(false);
             gameObject.SetActive(false);
+            listeDesMissions[index].decor.SetActive(true);
         }
     }
 

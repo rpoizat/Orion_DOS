@@ -88,22 +88,32 @@ public class MeshShaderPlugin : MonoBehaviour
         settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, new BlobAssetStore());
         var convert = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefabBrin, settings);
 
-        for (float i = -100.0f; i < 100.0f; i += 0.1f)
+        for(int i = 0; i < nbbrins; i++)
         {
-            for(float j = -50.0f; j < 50.0f; j += 0.1f)
-            {
-                float x = i + UnityEngine.Random.Range(0.05f, 0.2f);
-                float z = j + UnityEngine.Random.Range(0.05f, 0.2f);
+            float x = UnityEngine.Random.Range(-50.0f, 50.0f);
+            float z = UnityEngine.Random.Range(-55.0f, 55.0f);
 
-                Vector3 pos = new Vector3(x, -0.5f, z);
-                if (cpt < nbbrins)
-                {
-                    CreateGrass(pos, cpt, convert);
-                    cpt++;
-                }
-            }
-            
+            Vector3 pos = new Vector3(x, 0.0f, z);
+            CreateGrass(pos, cpt, convert);
+            cpt++;
         }
+
+        //for (float i = -37.0f; i < 37.0f; i += 0.25f)
+        //{
+        //    for(float j = -55.0f; j < 50.0f; j += 0.25f)
+        //    {
+        //        float x = i + UnityEngine.Random.Range(0.05f, 0.2f);
+        //        float z = j + UnityEngine.Random.Range(0.05f, 0.2f);
+
+        //        Vector3 pos = new Vector3(x, -0.5f, z);
+        //        if (cpt < nbbrins)
+        //        {
+        //            CreateGrass(pos, cpt, convert);
+        //            cpt++;
+        //        }
+        //    }
+            
+        //}
         settings.BlobAssetStore.Dispose();
     }
 
