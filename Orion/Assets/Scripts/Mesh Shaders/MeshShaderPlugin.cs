@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using Unity.Entities;
-using Unity.Physics;
 using Unity.Transforms;
-using Unity.Mathematics;
 
 public class MeshShaderPlugin : MonoBehaviour
 {
@@ -98,22 +96,6 @@ public class MeshShaderPlugin : MonoBehaviour
             cpt++;
         }
 
-        //for (float i = -37.0f; i < 37.0f; i += 0.25f)
-        //{
-        //    for(float j = -55.0f; j < 50.0f; j += 0.25f)
-        //    {
-        //        float x = i + UnityEngine.Random.Range(0.05f, 0.2f);
-        //        float z = j + UnityEngine.Random.Range(0.05f, 0.2f);
-
-        //        Vector3 pos = new Vector3(x, -0.5f, z);
-        //        if (cpt < nbbrins)
-        //        {
-        //            CreateGrass(pos, cpt, convert);
-        //            cpt++;
-        //        }
-        //    }
-            
-        //}
         settings.BlobAssetStore.Dispose();
     }
 
