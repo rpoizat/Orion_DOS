@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Unity.Transforms;
 using Unity.Entities;
@@ -41,7 +40,7 @@ public class InGameInterfaceScript : MonoBehaviour
         //paramétrage du boss
         boss = eManager.Instantiate(convert);
         WaterBossBehaviourTree._instance.boss = boss;
-        eManager.SetName(boss, "Boss");
+        //eManager.SetName(boss, "Boss");
         Vector3 pos = new Vector3(0, 1.7f, 0);
         eManager.SetComponentData(boss, new BossStats { health = pvBoss, cdSpell1 = 10, cdSpell2 = 5, timeLeftSpell1 = 0, timeLeftSpell2 = 0 });
         eManager.SetComponentData(boss, new Translation { Value = pos });
@@ -71,6 +70,7 @@ public class InGameInterfaceScript : MonoBehaviour
         eManager.World.GetExistingSystem<TriggerSystem>().Enabled = true;
         eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = true;
         eManager.World.GetExistingSystem<ExplosionSystem>().Enabled = true;
+        eManager.World.GetExistingSystem<GrassPhysicSystem>().Enabled = true;
 
         //lancer les systèmes des compétences équipées
         LectureInventaire();
@@ -172,6 +172,7 @@ public class InGameInterfaceScript : MonoBehaviour
             eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = false;
             eManager.World.GetExistingSystem<ExplosionSystem>().Enabled = false;
             eManager.World.GetExistingSystem<ForceShieldSystem>().Enabled = false;
+            eManager.World.GetExistingSystem<GrassPhysicSystem>().Enabled = false;
 
             //détruire l'entite du boss
             eManager.DestroyEntity(boss);
@@ -207,6 +208,7 @@ public class InGameInterfaceScript : MonoBehaviour
                 eManager.World.GetExistingSystem<HitBossCollisionSystem>().Enabled = false;
                 eManager.World.GetExistingSystem<ExplosionSystem>().Enabled = false;
                 eManager.World.GetExistingSystem<ForceShieldSystem>().Enabled = false;
+                eManager.World.GetExistingSystem<GrassPhysicSystem>().Enabled = false;
 
                 //détruire l'entite du boss
                 eManager.DestroyEntity(boss);

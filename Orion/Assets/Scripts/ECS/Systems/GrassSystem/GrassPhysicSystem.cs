@@ -12,7 +12,7 @@ public class GrassPhysicSystem : JobComponentSystem
         Vector3 playerPosition = Vector3.zero;
 
         //récupérer la postion du joueur
-        Entities.ForEach((in Translation trans, in PlayerStatsData playerStats) =>
+        Entities.ForEach((in Translation trans, in PlayerTag player_tag) =>
         {
             playerPosition = trans.Value;
         }).Run();

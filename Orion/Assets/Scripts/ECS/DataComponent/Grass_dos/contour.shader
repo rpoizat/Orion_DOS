@@ -22,6 +22,7 @@
 			uniform StructuredBuffer<float3> buffer;
 			uniform StructuredBuffer<int> index;
 			uniform StructuredBuffer<float> windResistance;
+			uniform StructuredBuffer<float3> forces;
 			uniform float3 wind;
 
 			struct v2f
@@ -33,7 +34,13 @@
 			{
 				uint nbBrin = index[id] / uint(8);
 				uint palier = index[id] % uint(8);
+
 				float3 w = wind * windResistance[nbBrin];
+
+				if (forces[nbBrin].x != 0.0f && forces[nbBrin].y != 0.0f && forces[nbBrin].z != 0.0f)
+				{
+					w = forces[nbBrin];
+				}
 
 				if (palier < 2)
 				{
@@ -65,8 +72,9 @@
 					}
 				}
 
-				float4 pos = float4(buffer[index[id]] + w, 1);
-				v2f OUT;
+				v2f OUT;				
+
+				float4 pos = float4(buffer[index[id]] + w, 1);					
 				OUT.vertex = UnityObjectToClipPos(pos);
 
 				return OUT;

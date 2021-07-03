@@ -21,6 +21,7 @@
 			float4 _GrassColor;
 			uniform StructuredBuffer<float3> buffer;
 			uniform StructuredBuffer<float> windResistance;
+			uniform StructuredBuffer<float3> forces;
 			uniform StructuredBuffer<int> index;
 			uniform float3 wind;
 
@@ -34,6 +35,11 @@
 				uint nbBrin = index[id] / uint(8);
 				uint palier = index[id] % uint(8);
 				float3 w = wind * windResistance[nbBrin];
+
+				if (forces[nbBrin].x != 0.0f && forces[nbBrin].y != 0.0f && forces[nbBrin].z != 0.0f)
+				{
+					w = forces[nbBrin];
+				}
 
 				if (palier < 2)
 				{

@@ -47,37 +47,25 @@ public class WaterBossBehaviourTree : MonoBehaviour
 
         if (rangePlayerBoss < 10)
         {
-
-            print("le boss est au corps à corps");
             return states.Success;
 
         }
 
-
-
-        print("le boss est à distance");
         return states.Failure;
     }
 
     private states testcd1()
     {
-
         if(timeLeftSpell1 <= 0)
         {
-            print("testCD1 ok");
             return states.Success;
 
-           
         }
 
         else
         {
-            print("testCD1 KO");
             return states.Failure;
         }
-
-        
-
     }
 
     private states testcd2()
@@ -85,13 +73,11 @@ public class WaterBossBehaviourTree : MonoBehaviour
 
         if (timeLeftSpell2 <= 0)
         {
-            print("testCD2 ok");
             return states.Success;
         }
 
         else
         {
-            print("testCD2 KO");
             return states.Failure;
         }
 
@@ -102,21 +88,15 @@ public class WaterBossBehaviourTree : MonoBehaviour
 
         eManager.AddComponent<Spell1Available>(boss);
 
-        print("Spell 1 casting ok");
-
         return states.Success;
 
     }
 
     private states castSpell2()
     {
-
-        print("spell 2 casting");
-
         eManager.AddComponent<Spell2Available>(boss);
 
         return states.Success;
-
     }
 
   
@@ -165,8 +145,6 @@ public class WaterBossBehaviourTree : MonoBehaviour
         {
             states result = behaviourTree.Execute();
             behaviourTree.Initialize();
-
-            print(" update du tree");
         }
     }
 }
