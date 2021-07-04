@@ -32,6 +32,7 @@ public class MeshShaderPlugin : MonoBehaviour
     public UnityEngine.Material mat;
     public UnityEngine.Material contours;
     public int nbbrins;
+    public bool physic;
 
     private void Start()
     {
@@ -111,37 +112,40 @@ public class MeshShaderPlugin : MonoBehaviour
 
     private void Update()
     {
-        res = query_force.ToEntityArray(Unity.Collections.Allocator.TempJob);
-        
-        List<Entity> l = new List<Entity>(res);
-        int nbprocess = nbbrins / 10;
-
-        for (int i = 0; i < 10; i++)
+        if(physic)
         {
-            threadpool[i] = new Thread(unused => updateForces(i * nbprocess, ((i + 1) * nbprocess) - 1, ref l));
-            threadpool[i].Start();
-        }
+            res = query_force.ToEntityArray(Unity.Collections.Allocator.TempJob);
 
-        int reste = nbbrins % 10;
+            List<Entity> l = new List<Entity>(res);
+            int nbprocess = nbbrins / 10;
 
-        for(int i = nbbrins - reste; i < nbbrins; i++)
-        {
-            Grass_dos_Stats d = eManager.GetComponentData<Grass_dos_Stats>(res[i]);
-            forces[i].x = d.forceX;
-            forces[i].y = d.forceY;
-            forces[i].z = d.forceZ;
-        }
+            for (int i = 0; i < 10; i++)
+            {
+                threadpool[i] = new Thread(unused => updateForces(i * nbprocess, ((i + 1) * nbprocess) - 1, ref l));
+                threadpool[i].Start();
+            }
 
-        foreach (Thread t in threadpool)
-        {
-            t.Join();
-        }
+            int reste = nbbrins % 10;
 
-        res.Dispose();
-        l.Clear();
+            for (int i = nbbrins - reste; i < nbbrins; i++)
+            {
+                Grass_dos_Stats d = eManager.GetComponentData<Grass_dos_Stats>(res[i]);
+                forces[i].x = d.forceX;
+                forces[i].y = d.forceY;
+                forces[i].z = d.forceZ;
+            }
 
-        force_buffer.SetData(forces);
-        Shader.SetGlobalBuffer("forces", force_buffer);
+            foreach (Thread t in threadpool)
+            {
+                t.Join();
+            }
+
+            res.Dispose();
+            l.Clear();
+
+            force_buffer.SetData(forces);
+            Shader.SetGlobalBuffer("forces", force_buffer);
+        }       
     }
 
     private void InitialiseGrass()
@@ -249,7 +253,6 @@ public class MeshShaderPlugin : MonoBehaviour
         }       
 
         var brin = eManager.Instantiate(c);
-        //eManager.SetName(brin, "brin" + cpt);
         float wr = UnityEngine.Random.Range(0.2f, 2.0f);
         windR[cpt] = wr;
         eManager.SetComponentData<Grass_dos_Stats>(brin, new Grass_dos_Stats {positionX = position.x, positionY = position.y, positionZ = position.z, exist = true, height = hauteur, windResistance = wr});
